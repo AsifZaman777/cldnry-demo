@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cloudinary Uploader</title>
+  </head>
+  <body>
+    <h1>Upload Image to Cloudinary</h1>
+
+    <!-- Upload Form -->
+    <form id="uploadForm">
+      <input type="file" id="fileInput" name="file" accept="image/*" />
+      <button type="submit">Upload</button>
+    </form>
+
+    <h2>Uploaded Image:</h2>
+    <div id="preview"></div>
+
+    <!-- Inline JS -->
+    <script>
+      const form = document.getElementById("uploadForm");
+      const fileInput = document.getElementById("fileInput");
+      const preview = document.getElementById("preview");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const file = fileInput.files[0];
+        if (!file) {
+          alert("Please select an image file!");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          // Update the fetch URL in your index.html
+          fetch("http://localhost:3000/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+          console.log("Upload response:", JSON.stringify(data));
+
+          if (data.url) {
+            preview.innerHTML = `<img src="${data.url}" alt="Uploaded Image" width="300" />`;
+          } else {
+            preview.innerHTML = "<p>Upload failed.</p>";
+          }
+        } catch (err) {
+          console.error("Upload error:", err);
+          preview.innerHTML = "<p>Error uploading image.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>
