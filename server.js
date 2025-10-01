@@ -40,9 +40,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     //delete temp file
     fs.unlinkSync(req.file.path);
-
     res.json({ url: result.secure_url });
-    console.log("File uploaded to Cloudinary:", result.public_id);
+    console.log("File uploaded to Cloudinary:", result.secure_url);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Upload failed" });
